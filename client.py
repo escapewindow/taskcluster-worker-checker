@@ -7,15 +7,10 @@ from argparse import ArgumentParser
 import urllib.request, json
 
 
-def generate_win10_gw_testing(min_nr, max_nr):
+def build_host_info(hostnames, **kwargs):
     all_hosts = {}
-    for number in range(min_nr, max_nr):
-        all_hosts.update({"T-W1064-MS-0{}".format(number): {
-            "bug": "Dev-Environment",
-            "date": "No date",
-            "update": "Find Bug Comment"
-            },
-        })
+    for hostname in hostnames:
+        all_hosts.update({hostname: kwargs})
     return all_hosts
 
 # Define machines that SHOULDN'T appear.
@@ -88,7 +83,9 @@ machines_to_ignore = {
     },
 }
 
-machines_to_ignore['windows']['loaner'] = generate_win10_gw_testing(10, 61)
+machines_to_ignore['windows']['loaner'] = build_host_info(
+    ["T-BLAH-0{}".format(i) for i in range(10, 62)], key1="val1", key2="val2"
+)
 
 workersList = []
 
